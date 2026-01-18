@@ -5,7 +5,6 @@ import io.github.jan.supabase.postgrest.Postgrest
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 object SupabaseClient {
     val client = createSupabaseClient(
         supabaseUrl = "https://xyztewvozclvxflbzdlk.supabase.co",
@@ -15,7 +14,6 @@ object SupabaseClient {
     }
 }
 
-
 @Serializable
 data class User(
     @SerialName("user_id") val userId: Long,
@@ -23,6 +21,21 @@ data class User(
     val password: String
 )
 
+@Serializable
+data class Alumno(
+    @SerialName("alumno_id") val alumnoId: Long,
+    @SerialName("user_id") val userId: Long,
+    @SerialName("curso_id") val cursoId: Long,
+    val nombre: String
+)
+
+@Serializable
+data class Asignatura(
+    @SerialName("asignatura_id") val asignaturaId: Long,
+    @SerialName("curso_id") val cursoId: Long,
+    @SerialName("libro_id") val libroId: Long,
+    @SerialName("Nombre") val nombre: String
+)
 
 @Serializable
 data class Libro(

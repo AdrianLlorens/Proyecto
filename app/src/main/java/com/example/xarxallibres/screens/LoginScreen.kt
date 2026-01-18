@@ -4,9 +4,9 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,11 +23,10 @@ import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(onLoginSuccess: () -> Unit) {
+fun LoginScreen(onLoginSuccess: (Long) -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
-
 
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -42,7 +41,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
     ) {
 
         Icon(
-            imageVector = Icons.Default.MenuBook,
+            imageVector = Icons.AutoMirrored.Filled.MenuBook,
             contentDescription = null,
             tint = Color(0xFF0D47A1),
             modifier = Modifier.size(64.dp)
@@ -51,7 +50,6 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
         Text("Gestión de libros escolares", color = Color(0xFF0D47A1))
 
         Spacer(modifier = Modifier.height(48.dp))
-
 
         OutlinedTextField(
             value = email,
@@ -86,13 +84,11 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-
         Button(
             onClick = {
                 scope.launch {
                     isLoading = true
                     try {
-
                         val users = SupabaseClient.client.from("User").select {
                             filter {
                                 eq("username", email)
@@ -101,7 +97,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                         }.decodeList<User>()
 
                         if (users.isNotEmpty()) {
-                            onLoginSuccess()
+                            onLoginSuccess(users.first().userId)
                         } else {
                             Toast.makeText(context, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()
                         }
